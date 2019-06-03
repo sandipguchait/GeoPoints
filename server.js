@@ -17,8 +17,8 @@ const server = new ApolloServer({
   //context catches all request made to headers
   //context from apollo server
   context: async ({ req }) => {
-    let authToken = null
-    let currentUser = null
+    let authToken = null;
+    let currentUser = null;
     try {
      authToken = req.headers.authorization
      if(authToken) {
