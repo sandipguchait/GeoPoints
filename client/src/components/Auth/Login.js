@@ -2,21 +2,12 @@ import React, { useContext } from "react";
 import { GraphQLClient } from 'graphql-request';
 import { GoogleLogin } from 'react-google-login';
 import { withStyles } from "@material-ui/core/styles";
-// import Typography from "@material-ui/core/Typography";
-
+import Typography from "@material-ui/core/Typography";
+import '../../styles.css';
 //Importing Context
 import Context from '../../context';
+import { ME_QUERY } from '../../graphql/queries';
 
-const ME_QUERY = `
-  {
-    me{
-      _id
-      name
-      email
-      picture
-    }
-  }
-`
 
 const Login = ({ classes }) => {
   const { dispatch } = useContext(Context);
@@ -41,12 +32,28 @@ const Login = ({ classes }) => {
   }
 
   return (
-    <GoogleLogin 
-      clientId="868408474848-q2f5ujaq4fh0qc4jg9tq1lrujvio7h77.apps.googleusercontent.com"
-      onSuccess={onSuccess}
-      onFailure={onFailure}
-      isSignedIn={true}
-    />
+    <div className="root">
+      <div className="card">
+        <div className="container">
+          <Typography
+            component="h1"
+            variant="h3"
+            gutterBottom
+            noWrap
+            style={{ color: "rgb(66, 133, 244)"}}
+          >
+            Welcome
+          </Typography>
+          <GoogleLogin 
+            clientId="868408474848-q2f5ujaq4fh0qc4jg9tq1lrujvio7h77.apps.googleusercontent.com"
+            onSuccess={onSuccess}
+            onFailure={onFailure}
+            isSignedIn={true}
+            theme="dark"
+          />
+        </div>
+      </div>
+    </div>
   )
 };
 
@@ -56,7 +63,7 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   }
 };
 
