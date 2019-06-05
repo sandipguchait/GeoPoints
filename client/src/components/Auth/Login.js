@@ -43,15 +43,16 @@ const Login = ({ classes }) => {
             variant="h3"
             gutterBottom
             noWrap
-            style={{ color: "rgb(66, 133, 244)"}}
+            style={{ color: "rgb(66, 133, 244)", fontWeight: "bold", fontStyle:"oblique"}}
           >
-            Welcome
+            GeoPoints
           </Typography>
           <GoogleLogin 
             clientId="868408474848-q2f5ujaq4fh0qc4jg9tq1lrujvio7h77.apps.googleusercontent.com"
             onSuccess={onSuccess}
             onFailure={onFailure}
             isSignedIn={true}
+            buttonText="Login with Google"
             theme="dark"
           />
         </div>
