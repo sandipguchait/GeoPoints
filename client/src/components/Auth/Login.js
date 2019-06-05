@@ -20,7 +20,11 @@ const Login = ({ classes }) => {
         headers: { authorization: idToken }
       })
       const data = await client.request(ME_QUERY)
+      
+      //Dispatch the user data to state object
       dispatch({ type: "LOGIN_USER", payload: data.me })
+      //dispatch the isauth state to global state
+      dispatch({ type: "IS_LOGGED_IN", payload: googleUser.isSignedIn()})
     } 
     catch(err) {
       onFailure(err)
@@ -33,7 +37,6 @@ const Login = ({ classes }) => {
 
   return (
     <div className="root">
-      <div className="card">
         <div className="container">
           <Typography
             component="h1"
@@ -53,7 +56,6 @@ const Login = ({ classes }) => {
           />
         </div>
       </div>
-    </div>
   )
 };
 
