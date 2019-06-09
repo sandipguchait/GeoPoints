@@ -3,6 +3,7 @@ import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl';
 import { withStyles } from "@material-ui/core/styles";
 import '../styles.css';
 import { GraphQLClient } from 'graphql-request';
+import differenceInMinutes from 'date-fns/difference_in_minutes';
 // import Button from "@material-ui/core/Button";
 // import Typography from "@material-ui/core/Typography";
 // import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
@@ -65,6 +66,7 @@ const Map = ({ classes }) => {
 
   const idToken = window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
 
+  // fetch all the created pins
   const getPins = async () => {
     const client = new GraphQLClient(BASE_URL, {
       headers: { authorization: idToken}
@@ -72,6 +74,12 @@ const Map = ({ classes }) => {
     const { getPins } = await client.request(GET_PINS)
     dispatch({ type: "GET_PINS", payload: getPins })
   };
+
+  //Displaying Pin color conditionally on new pin create
+  const highlightNewPin = pin => {
+    const isNewPin = differenceInMinutes(Date.now(), Number(pin.createdAt)) <= 30
+    return isNewPin ? "black" : "darkblue"
+  }
 
 
   return (
@@ -148,7 +156,7 @@ const Map = ({ classes }) => {
             >
            <PinIcon 
              size={40}
-             color="darkblue"
+             color={highlightNewPin(pin)}
            />
           </Marker>
         ))}
