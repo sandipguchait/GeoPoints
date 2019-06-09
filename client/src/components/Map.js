@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl';
 import { withStyles } from "@material-ui/core/styles";
 import '../styles.css';
+import { GraphQLClient } from 'graphql-request';
 // import Button from "@material-ui/core/Button";
 // import Typography from "@material-ui/core/Typography";
 // import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
@@ -58,7 +59,20 @@ const Map = ({ classes }) => {
     }
   };
 
- 
+  useEffect(() => {
+    getPins();
+  }, []);
+
+  const idToken = window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
+
+  const getPins = async () => {
+    const client = new GraphQLClient(BASE_URL, {
+      headers: { authorization: idToken}
+    })
+    const { getPins } = await client.request(GET_PINS)
+    dispatch({ type: "GET_PINS", payload: getPins })
+  };
+
 
   return (
     <>
@@ -103,7 +117,7 @@ const Map = ({ classes }) => {
           >
             <PinIcon 
               size={40}
-              color="blue"
+              color="darkred"
             />
           </Marker>
         )}
@@ -118,10 +132,26 @@ const Map = ({ classes }) => {
          >
            <PinIcon 
              size={40}
-             color="red"
+             color="hotpink"
            />
          </Marker>
         )}
+
+        {/* Created Pins  */}
+        {state.pins && state.pins.map(pin => (
+            <Marker
+              key={pin._id}
+              latitude={pin.latitude}
+              longitude={pin.longitude}
+              offsetLeft={-19}
+              offsetTop={-37}
+            >
+           <PinIcon 
+             size={40}
+             color="darkblue"
+           />
+          </Marker>
+        ))}
       </ReactMapGL>
 
       {/* BLOG AREA To ADD PIN CONTENT  */}

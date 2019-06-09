@@ -7,7 +7,6 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhotoTwoTone";
 import LandscapeIcon from "@material-ui/icons/LandscapeOutlined";
-import PlaceIcon from "@material-ui/icons/Place";
 import ClearIcon from "@material-ui/icons/Clear";
 import SaveIcon from "@material-ui/icons/SaveTwoTone";
 
@@ -41,8 +40,9 @@ const CreatePin = ({ classes }) => {
       const variables = { title, image: url , content , latitude, longitude }
       const { createPin } = await client.request(CREATE_PIN_MUTATION, variables )
 
-      console.log("Pin Created", {createPin})
-      handleDeleteDraft()
+      //dispatching an action for new pin
+      dispatch({ type: "CREATE_PIN", payload: createPin })
+      handleDeleteDraft();
     } 
     catch(err) {
       setSubmitting(false)
