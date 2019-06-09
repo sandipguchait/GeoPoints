@@ -25,7 +25,7 @@ const Header = ({ classes }) => {
               color="inherit"
               noWrap
             >
-              GeoPoints
+              TRAVELLER
             </Typography>
           </div>
 
