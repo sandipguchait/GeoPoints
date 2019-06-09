@@ -12,7 +12,8 @@ import ClearIcon from "@material-ui/icons/Clear";
 import SaveIcon from "@material-ui/icons/SaveTwoTone";
 
 import Context from '../../context';
-import {CREATE_PIN_MUTATION} from '../../graphql/mutations'
+import {CREATE_PIN_MUTATION} from '../../graphql/mutations';
+import { BASE_URL } from '../../clientHook';
 
 const CreatePin = ({ classes }) => {
 
@@ -32,7 +33,7 @@ const CreatePin = ({ classes }) => {
       const idToken = window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
 
       //Performing Mutation
-      const client = new GraphQLClient('http://localhost:4000/graphql', {
+      const client = new GraphQLClient(BASE_URL, {
         headers: { authorization: idToken }
       })
       const url = await handleImageUpload();
