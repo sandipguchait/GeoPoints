@@ -1,4 +1,5 @@
 import React,{ useState, useContext } from "react";
+import axios from 'axios';
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -18,11 +19,26 @@ const CreatePin = ({ classes }) => {
 
   const { dispatch } = useContext(Context);
 
-  const handleSubmit = (event) => {
+
+  //Submitting the Form
+  const handleSubmit = async event => {
     event.preventDefault();
-    console.log({ title, image, content })
+    const url = await handleImageUpload();
+    console.log({ title, image, url ,content })
   };
 
+  //Image Upload To cloudinary
+  const handleImageUpload = async() => {
+    const data = new FormData()
+    data.append('file', image)
+    data.append("upload_preset", "Traveller")
+    data.append("cloud_name", "xjailbreak")
+
+    const res = await axios.post("https://api.cloudinary.com/v1_1/xjailbreak/image/upload", data)
+    return res.data.url
+  }
+  
+  //Deleteing Draft 
   const handleDeleteDraft = () => {
     setTitle("")
     setImage("")
@@ -45,7 +61,6 @@ const CreatePin = ({ classes }) => {
           name="title"
           label="Title"
           placeholder="Insert Pin Title"
-          value={title}
           onChange={e => setTitle(e.target.value)}
         />
         <input 
