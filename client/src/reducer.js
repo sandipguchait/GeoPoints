@@ -20,6 +20,7 @@ export default function reducer(state, action) {
     case "CREATE_DRAFT":
       return {
         ...state,
+        currentPin: null,
         draft: {
           latitude: 0,
           longitude: 0
@@ -46,6 +47,12 @@ export default function reducer(state, action) {
         return {
           ...state,
           pins: [...prevPins, newPin ]
+        }
+      case "SET_PIN":
+        return {
+          ...state,
+          currentPin: action.payload,
+          draft: null
         }
     default:
       return state

@@ -31,6 +31,7 @@ export const GET_PINS = `
         createdAt
         author {
           _id
+          email
           name
           picture
         }
