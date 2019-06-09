@@ -12,7 +12,7 @@ import Context from '../context';
 const INITIAL_VIEWPORT = {
   latitude: 22.589752733932833,
   longitude: 86.02945304174042,
-  zoom: 8
+  zoom: 13
 }
 
 const Map = ({ classes }) => {
@@ -101,6 +101,21 @@ const Map = ({ classes }) => {
               color="blue"
             />
           </Marker>
+        )}
+
+        {/* DRAFT PIN */}
+        {state.draft && (
+           <Marker
+           latitude={state.draft.latitude}
+           longitude={state.draft.longitude}
+           offsetLeft={-19}
+           offsetTop={-37}
+         >
+           <PinIcon 
+             size={40}
+             color="red"
+           />
+         </Marker>
         )}
       </ReactMapGL>
     </div>
