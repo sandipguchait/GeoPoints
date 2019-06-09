@@ -6,6 +6,8 @@ import '../styles.css';
 // import Typography from "@material-ui/core/Typography";
 // import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
 
+import { BASE_URL } from '../clientHook';
+import { GET_PINS } from '../graphql/queries';
 import PinIcon from '../components/PinIcon';
 import Context from '../context';
 import Blog from '../components/Blog';
@@ -43,7 +45,7 @@ const Map = ({ classes }) => {
 
   useEffect(() => {
     getUserPosition()
-  }, [])
+  }, []);
 
   const getUserPosition = () => {
     //Getting User current position using geolocation from window object
@@ -54,7 +56,9 @@ const Map = ({ classes }) => {
         setUserPosition({ latitude, longitude })
       })
     }
-  }
+  };
+
+ 
 
   return (
     <>
