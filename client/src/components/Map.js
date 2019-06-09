@@ -2,12 +2,13 @@ import React, { useState, useEffect, useContext } from "react";
 import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl';
 import { withStyles } from "@material-ui/core/styles";
 import '../styles.css';
-import PinIcon from '../components/PinIcon';
 // import Button from "@material-ui/core/Button";
 // import Typography from "@material-ui/core/Typography";
 // import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
 
+import PinIcon from '../components/PinIcon';
 import Context from '../context';
+import Blog from '../components/Blog';
 
 const INITIAL_VIEWPORT = {
   latitude: 22.589752733932833,
@@ -118,6 +119,9 @@ const Map = ({ classes }) => {
          </Marker>
         )}
       </ReactMapGL>
+
+      {/* BLOG AREA To ADD PIN CONTENT  */}
+      <Blog />
     </div>
     </>
   );
