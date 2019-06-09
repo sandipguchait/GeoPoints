@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ReactMapGL, { NavigationControl, Marker } from 'react-map-gl';
 import { withStyles } from "@material-ui/core/styles";
 import '../styles.css';
@@ -7,6 +7,8 @@ import PinIcon from '../components/PinIcon';
 // import Typography from "@material-ui/core/Typography";
 // import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
 
+import Context from '../context';
+
 const INITIAL_VIEWPORT = {
   latitude: 22.589752733932833,
   longitude: 86.02945304174042,
@@ -14,12 +16,28 @@ const INITIAL_VIEWPORT = {
 }
 
 const Map = ({ classes }) => {
+  const { state, dispatch } = useContext(Context);
   const [ mapview, setMapview] = useState('streets-v9');
   const [viewport, setViewport] = useState(INITIAL_VIEWPORT);
   const [userPosition, setUserPosition] = useState(null)
 
   const handleChange = (e) => {
     setMapview(e.target.value)
+  };
+
+  const handleClick = ({ lngLat, leftButton }) => {
+    if(!leftButton) return 
+    if(!state.draft) {
+      dispatch({ type: "CREATE_DRAFT" })
+    }
+    const [longitude, latitude] = lngLat;
+    dispatch({
+      type: "UPDATE_DRAFT_LOCATION",
+      payload: {
+        longitude, 
+        latitude
+      }
+    })
   }
 
   useEffect(() => {
@@ -27,6 +45,7 @@ const Map = ({ classes }) => {
   }, [])
 
   const getUserPosition = () => {
+    //Getting User current position using geolocation from window object
     if("geolocation" in navigator ) {
       navigator.geolocation.getCurrentPosition(position => {
         const { latitude, longitude} = position.coords
@@ -60,6 +79,7 @@ const Map = ({ classes }) => {
         mapboxApiAccessToken="pk.eyJ1Ijoic2FuZGlwZ3VjaGFpdCIsImEiOiJjanduczlybnMxa2c1NDRwNmE5em0xbnZnIn0.pZORJqnyQyGANx-oVXeRXg"
         onViewportChange={newViewport => setViewport(newViewport)}
         {...viewport}
+        onClick={handleClick}
       >
         {/* Navigation Control Button with + &  - */}
         <div className={classes.navigationControl}>
