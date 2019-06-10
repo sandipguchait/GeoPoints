@@ -10,6 +10,7 @@ import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
 
 import { BASE_URL } from '../clientHook';
 import { GET_PINS } from '../graphql/queries';
+import {DELETE_PIN_MUTATION} from '../graphql/mutations';
 import PinIcon from '../components/PinIcon';
 import Context from '../context';
 import Blog from '../components/Blog';
@@ -66,6 +67,7 @@ const Map = ({ classes }) => {
     getPins();
   }, []);
 
+  //ID TOKEN FROM GOOGLELOGIN FROM WINDOW OBJECT
   const idToken = window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
 
   // fetch all the created pins
@@ -89,7 +91,20 @@ const Map = ({ classes }) => {
     dispatch({ type: "SET_PIN", payload: pin })
   };
 
-  const isAuthUser = () => state.currentUser.email === popup.author.email
+  const isAuthUser = () => state.currentUser.email === popup.author.email;
+
+  // Deletete Pin Mutation
+  const handleDeletePin = async pin => {
+    const variables = { pinId: pin._id }
+    const client = new GraphQLClient(BASE_URL, {
+      headers: { authorization: idToken }
+    })
+    const { deletePin } = await client.request(DELETE_PIN_MUTATION, variables );
+
+    //Dispatching an New Action
+    dispatch({ type: "DELETE_PIN", payload: deletePin })
+    setPopup(null)
+  };
 
 
   return (
@@ -188,11 +203,15 @@ const Map = ({ classes }) => {
             />
             <div className={classes.popupTab}>
              <Typography>
+               <strong>{popup.title}</strong>
+             </Typography>
+             <Typography>
                {popup.latitude.toFixed(6)}, {popup.longitude.toFixed(6)}
              </Typography>
              {isAuthUser() && (
-               <Button>
+               <Button onClick={() => handleDeletePin(popup)}>
                  <DeleteIcon className={classes.deleteIcon} />
+                 Delete
                </Button>
              )}
             </div>
